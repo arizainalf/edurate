@@ -10,38 +10,23 @@
             <li class="nav-item  {{ Request::is('admin') ? 'active' : '' }}">
                 <a href="{{ url('/admin') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
             </li>
-            <li class="nav-item {{ Request::is('admin/kelas') ? 'active' : '' }}">
-                <a href="{{ url('admin/kelas') }}" class="nav-link"><i class="fas fa-book"></i> <span>Kelas</span></a>
+            <li class="nav-item {{ Request::is('admin/jabatan') ? 'active' : '' }}">
+                <a href="{{ url('admin/jabatan') }}" class="nav-link"><i class="fas fa-book"></i> <span>Jabatan</span></a>
             </li>
-            <li class="nav-item {{ Request::is('admin/siswa') ? 'active' : '' }}">
-                <a href="{{ url('admin/siswa') }}" class="nav-link"><i class="fas fa-users"></i>
-                    <span>Siswa</span></a>
+            <li class="nav-item {{ Request::is('admin/guru') ? 'active' : '' }}">
+                <a href="{{ url('admin/guru') }}" class="nav-link"><i class="fas fa-users"></i>
+                    <span>Guru</span></a>
+            </li>
+            <li class="nav-item {{ Request::is('admin/kriteria') ? 'active' : '' }}">
+                <a href="{{ url('admin/kriteria') }}" class="nav-link"><i class="fas fa-users"></i>
+                    <span>Kriteria</span></a>
             </li>
             <li class="nav-item {{ Request::is('admin/mapel') ? 'active' : '' }}">
-                <a href="{{ url('admin/mapel') }}" class="nav-link"><i class="fas fa-users"></i>
-                    <span>Mapel</span></a>
+                <a href="{{ url('admin/mapel') }}" class="nav-link"><i class="fas fa-columns"></i>
+                    <span>Mata Pelajaran</span></a>
             </li>
-            <li class="nav-item {{ Request::is('admin/kategori') ? 'active' : '' }}">
-                <a href="{{ url('admin/kategori') }}" class="nav-link"><i class="fas fa-columns"></i>
-                    <span>Kategori</span></a>
-            </li>
-            <li class="nav-item {{ Request::is('admin/buku') ? 'active' : '' }}">
-                <a href="{{ url('admin/buku') }}" class="nav-link"><i class="fas fa-book"></i> <span>Buku</span></a>
-            </li>
-            <li class="nav-item {{ Request::is('admin/peminjamanmapel') ? 'active' : '' }}">
-                <a href="{{ url('admin/peminjamanmapel') }}" class="nav-link"><i class="fas fa-book-open"></i>
-                    <span>Peminjaman Buku Mapel</span></a>
-            </li>
-            <li class="nav-item {{ Request::is('admin/peminjaman') ? 'active' : '' }}">
-                <a href="{{ url('admin/peminjaman') }}" class="nav-link"><i class="fas fa-book-open"></i>
-                    <span>Peminjaman</span></a>
-            </li>
-            <li class="nav-item {{ Request::is('admin/kunjungan') ? 'active' : '' }}">
-                <a href="{{ url('admin/kunjungan') }}" class="nav-link"><i class="fas fa-walking"></i>
-                    <span>Kunjungan</span></a>
-            </li>
-            <li class="nav-item {{ Request::is('admin/user') ? 'active' : '' }}">
-                <a href="{{ url('admin/user') }}" class="nav-link"><i class="fas fa-user"></i> <span>User</span></a>
+            <li class="nav-item {{ Request::is('admin/nilai') ? 'active' : '' }}">
+                <a href="{{ url('admin/nilai') }}" class="nav-link"><i class="fas fa-book"></i> <span>Nilai</span></a>
             </li>
             <li class="nav-item {{ Request::is('admin/profill') ? 'active' : '' }}">
                 <a href="{{ url('admin/profil') }}" class="nav-link"><i class="fa-solid fa-id-badge"></i>

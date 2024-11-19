@@ -35,11 +35,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nama" class="form-label">Nama <span
+                                        <label for="name" class="form-label">Nama <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nama" name="nama"
-                                            value="{{ Auth::user()->nama }}">
-                                        <small class="invalid-feedback" id="errornama"></small>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            value="{{ Auth::user()->name }}">
+                                        <small class="invalid-feedback" id="errorname"></small>
                                     </div>
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email <span
@@ -188,12 +188,53 @@
 
             $("#updateData").submit(function(e) {
                 e.preventDefault();
-                if (!cropper) {
-                    alert("Please select and crop an image first.");
-                    return;
+                const formData = new FormData();
+                const url = `{{ route('profil') }}`;
+
+                // Tambahkan semua field dari form
+                $(this).serializeArray().forEach(field => {
+                    formData.append(field.name, field.value);
+                });
+
+                // Tambahkan file gambar jika ada
+                if (cropper) {
+                    const canvas = cropper.getCroppedCanvas({
+                        width: 300,
+                        height: 300
+                    });
+                    canvas.toBlob(function(blob) {
+                        formData.append("image", blob);
+                        sendProfileUpdate(formData, url);
+                    });
+                } else if ($("#image")[0].files.length > 0) {
+                    formData.append("image", $("#image")[0].files[0]);
+                    sendProfileUpdate(formData, url);
+                } else {
+                    sendProfileUpdate(formData, url);
                 }
-                $("#crop-image-btn").trigger("click");
             });
+
+            function sendProfileUpdate(formData, url) {
+                const successCallback = function(response) {
+                    $('#image').parent().find(".dropify-clear").trigger('click');
+                    $("#image-crop-container").hide();
+                    if (cropper) cropper.destroy();
+                    setButtonLoadingState("#updateData .btn.btn-success", false);
+                    handleSuccess(response, null, null, "no");
+                    if (response.data.image) {
+                        $(".img-navbar").css("background-image",
+                            `url('/storage/img/user/${response.data.image}')`);
+                    }
+                };
+
+                const errorCallback = function(error) {
+                    setButtonLoadingState("#updateData .btn.btn-success", false);
+                    handleValidationErrors(error, "updateData", ["nama", "email", "image"]);
+                };
+
+                ajaxCall(url, "POST", formData, successCallback, errorCallback);
+            }
+
         });
     </script>
 @endpush
