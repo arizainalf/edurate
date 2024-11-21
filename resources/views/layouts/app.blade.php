@@ -20,11 +20,22 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
 
-    <!-- FONTS GOOGGLE -->
+    <!-- FONTS GOOGLE -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    @laravelPWA
-</head>
+    <!-- Menambahkan PWA Manifest dan Service Worker Secara Manual -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('{{ asset('service-worker.js') }}')
+                .then(function(registration) {
+                    console.log('Service Worker terdaftar dengan scope:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('Pendaftaran Service Worker gagal:', error);
+                });
+        }
+    </script>
 </head>
 
 <body>

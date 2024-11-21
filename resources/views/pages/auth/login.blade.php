@@ -1,69 +1,160 @@
 @extends('layouts.auth')
 
-@section('title', 'Masuk')
+@section('title', 'Login')
 
 @push('style')
+<!-- Custom Styles -->
+<style>
+    /* Button color that matches the background */
+    .btn-primary {
+        background-color: #FF9E80; /* Pastel orange */
+        color: #fff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #FF7043; /* Dark orange */
+        color: #fff;
+    }
+
+    .btn-success {
+        background-color: #FF80AB; /* Pastel pink */
+        color: #fff;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #FF4081; /* Dark pink */
+        color: #fff;
+    }
+
+    /* Input field style */
+    .form-control {
+        border: 1px solid #dcdcdc;
+        border-radius: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #FF9E80; /* Pastel orange */
+        box-shadow: 0 0 5px rgba(255, 158, 128, 0.5);
+    }
+
+    /* Link color */
+    .text-small a {
+        color: #FF9E80; /* Pastel orange */
+    }
+
+    .text-small a:hover {
+        color: #FF7043; /* Dark orange */
+        text-decoration: underline;
+    }
+
+    /* Background text color */
+    .text-muted-transparent {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* Border and padding for login section */
+    .min-vh-100 {
+        border-right: 1px solid #f0f0f0;
+    }
+
+    /* Adjust padding for aesthetics */
+    .py-4.px-3 {
+        padding: 2rem;
+        max-width: 400px;
+    }
+
+    /* Animation for moving background */
+    @keyframes backgroundMove {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 100% 100%;
+        }
+    }
+
+    .background-moving {
+        animation: backgroundMove 20s linear infinite;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    /* Font size for the date and time */
+    #current-time {
+        font-size: 0.8rem; /* Small font size */
+        font-weight: normal; /* Normal font weight */
+        margin-top: 5px; /* Slight space above the time */
+    }
+</style>
 @endpush
 
 @section('main')
     <section class="section">
         <div class="d-flex align-items-stretch flex-wrap">
+            <!-- Login Form Section -->
             <div
                 class="col-lg-4 col-12 order-lg-1 min-vh-100 order-2 bg-white d-flex justify-content-center align-items-center">
-                <div class="py-2">
+                <div class="py-4 px-3">
+                    <!-- Logo -->
                     <div class="text-center mb-4">
-                        <img src="{{ asset('images/icons/Netutas72.png') }}" alt="logo">
+                        <img src="{{ asset('img/logo.png') }}" alt="logo" class="img-fluid" style="max-height: 30px;">
                     </div>
-                    <h4 class="text-dark text-center mb-2 font-weight-normal">Selamat Datang di</h4>
-                    <h4 class="font-weight-bold text-dark text-center mb-2">{{ config('app.name') }}</h4>
-                    <small class='text-center mb-3 d-block '>Perpustakaan SMP Negeri 7 Tasikmalaya</small>
+                    <!-- Login Form -->
                     <form id="login" autocomplete="off">
                         <div class="form-group">
                             <label for="email">Email <span class="text-danger">*</span></label>
-                            <input id="email" type="email" class="form-control" name="email">
+                            <input id="email" type="email" class="form-control" name="email"
+                                placeholder="Enter your email">
                             <small class="invalid-feedback" id="erroremail"></small>
                         </div>
                         <div class="form-group">
-                            <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
+                            <label for="password">Password <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="password" type="password" class="form-control" name="password"
+                                    placeholder="Enter your password">
                                 <div class="input-group-append">
-                                    <a class="btn bg-white d-flex justify-content-center align-items-center border"
+                                    <button class="btn bg-white border"
                                         onclick="togglePasswordVisibility('#password', '#toggle-password'); event.preventDefault();">
                                         <i id="toggle-password" class="fas fa-eye"></i>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                             <small class="text-danger" id="errorpassword"></small>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-block btn-primary btn-lg btn-icon icon-right">
-                                <i class="fas fa-sign-in mr-2"></i>Masuk
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                <i class="fas fa-sign-in mr-2"></i>Login
                             </button>
                         </div>
                         <div class="form-group">
-                            <a class="btn btn-block btn-success btn-lg btn-icon icon-right" href="{{ url('/attend') }}"
-                                role="button"><i class="fa-solid fa-bookmark mr-2"></i>Kunjungan</a>
+                            <a href="{{ url('/attend') }}" class="btn btn-success btn-lg btn-block">
+                                <i class="fa-solid fa-bookmark mr-2"></i>Visit
+                            </a>
                         </div>
                     </form>
-                    <div class="text-center">
-                        <a href="{{ route('password.request') }}" class="text-small font-weight-bold">Lupa Password ?</a>
+
+                    <!-- Forgot Password Link -->
+                    <div class="text-center mt-3">
+                        <a href="{{ route('password.request') }}" class="text-small font-weight-bold">Forgot Password?</a>
                     </div>
+
+                    <!-- Footer -->
                     <div class="text-small mt-5 text-center">
-                        Copyright &copy; {{ date('Y') }} <div class="bullet"></div> Create By Ari Zainal Fauziah
-
+                        Copyright &copy; {{ date('Y') }} <span class="bullet"></span> Khiria Legacy
                     </div>
-
                 </div>
             </div>
-            <div class="d-none d-lg-block col-lg-8 py-5 min-vh-100 background-walk-y position-relative overlay-gradient-bottom order-1"
-                data-background="{{ asset('img/smpn7tasik.jpg') }}">
-                <div class="absolute-bottom-left index-2">
-                    <div class="text-light p-5 pb-2">
-                        <div class="mb-5 pb-3">
-                            <h5 class="font-weight-normal text-muted-transparent">SMP Negeri 7 Tasikmalaya</h5>
-                            <h5 class="font-weight-normal text-muted-transparent">SEKOLAHKU NYAMAN
-                        </div>
+
+            <!-- Background Image with Moving Effect -->
+            <div class="d-none d-lg-block col-lg-8 py-5 min-vh-100 background-moving position-relative overlay-gradient-bottom order-1"
+                style="background-image: url('{{ asset('img/anime.jpg') }}');">
+                <div class="absolute-bottom-left index-2 p-5 pb-2">
+                    <div class="text-light">
+                        <h5 class="font-weight-normal text-muted-transparent">SDIT ABU BAKAR ASH-SHIDIQ</h5>
+                        <h5 class="font-weight-normal text-muted-transparent">Rajapolah, Tasikmalaya</h5>
+                        <h5 id="current-time" class="font-weight-normal text-muted-transparent"></h5> <!-- Dynamic time -->
                     </div>
                 </div>
             </div>
@@ -75,22 +166,45 @@
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <script>
+        // Update time dynamically in WIB (Indonesia Time) without AM/PM
+        function updateTime() {
+            const timeElement = document.getElementById("current-time");
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: false, // Remove AM/PM
+                timeZone: 'Asia/Jakarta' // Use WIB time zone
+            };
+            timeElement.innerHTML = now.toLocaleString('en-US', options);
+        }
+
+        setInterval(updateTime, 1000); // Update time every second
+
         $(document).ready(function() {
             $("#login").submit(function(e) {
-                setButtonLoadingState("#login .btn.btn-primary", true, "Masuk");
                 e.preventDefault();
+
+                // Set loading state on button
+                setButtonLoadingState("#login .btn.btn-primary", true, "Logging in");
+
                 const url = "{{ route('login') }}";
                 const data = new FormData(this);
 
                 const successCallback = function(response) {
                     setButtonLoadingState("#login .btn.btn-primary", false,
-                        "<i class='fas fa-sign-in mr-2'></i>Masuk");
+                        "<i class='fas fa-sign-in mr-2'></i>Login");
                     handleSuccess(response, null, null, "/");
                 };
 
                 const errorCallback = function(error) {
                     setButtonLoadingState("#login .btn.btn-primary", false,
-                        "<i class='fas fa-sign-in mr-2'></i>Masuk");
+                        "<i class='fas fa-sign-in mr-2'></i>Login");
                     handleValidationErrors(error, "login", ["email", "password"]);
                 };
 
