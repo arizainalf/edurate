@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Datatables;
+use DataTables;
 use App\Models\Guru;
 use Illuminate\Http\Request;
+use App\Traits\JsonResponder;
+use Illuminate\Support\Facades\Validator;
 
 class GuruController extends Controller
 {
@@ -15,20 +17,26 @@ class GuruController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $gurus = Guru::all();
+            $gurus = Guru::with('jabatan', 'mataPelajaran')->get();
             if ($request->mode == "datatable") {
                 return DataTables::of($gurus)
                     ->addColumn('action', function ($guru) {
                         $editButton = '<button class="btn btn-sm btn-warning d-inline-flex  align-items-baseline  mr-1" onclick="getModal(`createModal`, `/admin/guru/' . $guru->id . '`, [`id`, `nama`])"><i class="fas fa-edit mr-1"></i>Edit</button>';
-                        $deleteButton = '<button class="btn btn-sm btn-danger d-inline-flex  align-items-baseline " onclick="confirmDelete(`/admin/guru/' . $guru->id . '`, `category-table`)"><i class="fas fa-trash mr-1"></i>Hapus</button>';
+                        $deleteButton = '<button class="btn btn-sm btn-danger d-inline-flex  align-items-baseline " onclick="confirmDelete(`/admin/guru/' . $guru->id . '`, `guru-table`)"><i class="fas fa-trash mr-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
                     })
+                    ->addColumn('jabatan', function ($guru) {
+                        return $guru->jabatan->nama;
+                    })
+                    ->addColumn('mapel', function ($guru) {
+                        return $guru->mataPelajaran->nama;
+                    })
                     ->addIndexColumn()
-                    ->rawColumns(['action'])
+                    ->rawColumns(['action', 'jabatan', 'mapel'])
                     ->make(true);
             }
 
-            return $this->successResponse($gurus, 'Data Kategori ditemukan.');
+            return $this->successResponse($gurus, 'Data Guru ditemukan.');
         }
 
         return view('pages.guru.index');
@@ -47,9 +55,14 @@ class GuruController extends Controller
             return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
         }
 
-        $guru = Guru::create($request->only('nama'));
+        $guru = Guru::create([
+            'nama' => $request->nama,
+            'jabatan_id' => $request->jabatan_id,
+            'mata_pelajaran_id' => $request->mapel_id,
+        ]
+        );
 
-        return $this->successResponse($guru, 'Data Kategori Disimpan!', 201);
+        return $this->successResponse($guru, 'Data Guru Disimpan!', 201);
     }
 
     /**
@@ -59,6 +72,8 @@ class GuruController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required|min:4',
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
         ]);
 
         if ($validator->fails()) {
@@ -67,12 +82,12 @@ class GuruController extends Controller
         $guru = Guru::find($id);
 
         if (!$guru) {
-            return $this->errorResponse(null, 'Data Kategori Tidak Ada!');
+            return $this->errorResponse(null, 'Data Guru Tidak Ada!');
         }
 
         $guru->update($request->only('nama'));
 
-        return $this->successResponse($guru, 'Data Kategori Diubah!');
+        return $this->successResponse($guru, 'Data Guru Diubah!');
     }
 
     /**
@@ -83,12 +98,12 @@ class GuruController extends Controller
         $guru = Guru::find($id);
 
         if (!$guru) {
-            return $this->errorResponse(null, 'Data Kategori Tidak Ada!');
+            return $this->errorResponse(null, 'Data Guru Tidak Ada!');
         }
 
         $guru->delete();
 
-        return $this->successResponse(null, 'Data Kategori Dihapus!');
+        return $this->successResponse(null, 'Data Guru Dihapus!');
     }
     public function show($id)
     {
@@ -119,10 +134,10 @@ class GuruController extends Controller
             $barang = Guru::find($id);
 
             if (!$barang) {
-                return $this->errorResponse(null, 'Data Kategori tidak ditemukan.', 404);
+                return $this->errorResponse(null, 'Data Guru tidak ditemukan.', 404);
             }
 
-            return $this->successResponse($barang, 'Data Kategori ditemukan.');
+            return $this->successResponse($barang, 'Data Guru ditemukan.');
         }
     }
 }

@@ -128,11 +128,6 @@
                                 <i class="fas fa-sign-in mr-2"></i>Login
                             </button>
                         </div>
-                        <div class="form-group">
-                            <a href="{{ url('/attend') }}" class="btn btn-success btn-lg btn-block">
-                                <i class="fa-solid fa-bookmark mr-2"></i>Visit
-                            </a>
-                        </div>
                     </form>
 
                     <!-- Forgot Password Link -->
@@ -170,13 +165,13 @@
         function updateTime() {
             const timeElement = document.getElementById("current-time");
             const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit', 
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
                 second: '2-digit',
                 hour12: false, // Remove AM/PM
                 timeZone: 'Asia/Jakarta' // Use WIB time zone

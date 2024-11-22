@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GuruController;
+use App\Http\Controllers\MapelController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KriteriaController;
@@ -18,6 +20,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('jabatan', JabatanController::class)->names('jabatan');
     Route::resource('kriteria', KriteriaController::class)->names('kriteria');
+    Route::resource('guru', GuruController::class)->names('guru');
+    Route::resource('mapel', MapelController::class)->names('mapel');
+
 
     Route::match(['get', 'put'], 'profil', [ProfileController::class, 'index'])->name('profil');
     Route::put('profil/password', [ProfileController::class, 'updatePassword'])->name('profil.password');
