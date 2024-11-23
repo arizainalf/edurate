@@ -21,11 +21,15 @@
                 <a href="{{ url('admin/kriteria') }}" class="nav-link"><i class="fas fa-users"></i>
                     <span>Kriteria</span></a>
             </li>
+            <li class="nav-item {{ Request::is('admin/kegiatan') ? 'active' : '' }}">
+                <a href="{{ url('admin/kegiatan') }}" class="nav-link"><i class="fas fa-users"></i>
+                    <span>Kegiatan</span></a>
+            </li>
             <li class="nav-item {{ Request::is('admin/mapel') ? 'active' : '' }}">
                 <a href="{{ url('admin/mapel') }}" class="nav-link"><i class="fas fa-columns"></i>
                     <span>Mata Pelajaran</span></a>
             </li>
-            <li class="nav-item {{ Request::is('admin/nilai') ? 'active' : '' }}">
+            <li class="nav-item {{ Request::is('admin/nilai*') ? 'active' : '' }}">
                 <a href="{{ url('admin/nilai') }}" class="nav-link"><i class="fas fa-book"></i> <span>Nilai</span></a>
             </li>
             <li class="nav-item {{ Request::is('admin/profill') ? 'active' : '' }}">

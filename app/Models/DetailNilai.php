@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Nilai;
 use App\Models\Kegiatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Kriteria extends Model
+class DetailNilai extends Model
 {
     use HasFactory;
 
@@ -15,5 +16,9 @@ class Kriteria extends Model
     public function kegiatans()
     {
         return $this->hasMany(Kegiatan::class);
+    }
+    public function nilai()
+    {
+        return $this->belongsTo(Nilai::class);
     }
 }

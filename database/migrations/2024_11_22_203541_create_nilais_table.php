@@ -10,11 +10,10 @@ class CreateNilaisTable extends Migration
     {
         Schema::create('nilais', function (Blueprint $table) {
             $table->id();
-            $table->integer('nilai');
-            $table->string('ket')->nullable();
             $table->foreignId('guru_id')->constrained('gurus')->onDelete('cascade');
-            $table->foreignId('kegiatan_id')->constrained('kegiatans')->onDelete('cascade');
+            $table->date('tanggal');
             $table->string('tahun_pelajaran');
+            $table->bigInteger('nilai')->nullable();
             $table->timestamps();
         });
     }

@@ -27,19 +27,18 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <a href="{{ route('guru.show', 'pdf') }}" class="btn btn-sm px-3 btn-danger mr-1"
+                            <a href="{{ route('kegiatan.show', 'pdf') }}" class="btn btn-sm px-3 btn-danger mr-1"
                                 target="_blank"><i class="fas fa-file-pdf mr-2"></i>Pdf</a>
-                            <a href="{{ route('guru.show', 'excel') }}" class="btn btn-sm px-3 btn-info"
+                            <a href="{{ route('kegiatan.show', 'excel') }}" class="btn btn-sm px-3 btn-info"
                                 target="_blank"><i class="fas fa-file-excel mr-2"></i>Excel</a>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="guru-table" width="100%">
+                            <table class="table table-bordered table-striped" id="kegiatan-table" width="100%">
                                 <thead>
                                     <tr>
                                         <th scope="col" width="5%">#</th>
-                                        <th scope="col">Nama</th>
-                                        <th scope="col">Jabatan</th>
-                                        <th scope="col">Mata Pelajaran</th>
+                                        <th scope="col">Kriteria</th>
+                                        <th scope="col">Kegiatan</th>
                                         <th scope="col" width="20%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -52,7 +51,7 @@
             </div>
         </section>
     </div>
-    @include('pages.guru.modal')
+    @include('pages.kegiatan.modal')
 @endsection
 
 @push('scripts')
@@ -63,21 +62,17 @@
 
     <script>
         $(document).ready(function() {
-            datatableCall('guru-table', '{{ route('guru.index') }}', [{
+            datatableCall('kegiatan-table', '{{ route('kegiatan.index') }}', [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 },
                 {
+                    data: 'kriteria',
+                    name: 'kriteria'
+                },
+                {
                     data: 'nama',
                     name: 'nama'
-                },
-                {
-                    data: 'jabatan',
-                    name: 'jabatan'
-                },
-                {
-                    data: 'mapel',
-                    name: 'mapel'
                 },
                 {
                     data: 'action',
@@ -85,29 +80,28 @@
                 },
             ]);
 
-            select2ToJson("#jabatan_id", "{{ route('jabatan.index') }}", "#createModal");
-            select2ToJson("#mata_pelajaran_id", "{{ route('mapel.index') }}", "#createModal");
+            select2ToJson("#kriteria_id", "{{ route('kriteria.index') }}", "#createModal");
 
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-success", true);
                 e.preventDefault();
                 const kode = $("#saveData #id").val();
-                let url = "{{ route('guru.store') }}";
+                let url = "{{ route('kegiatan.store') }}";
                 const data = new FormData(this);
 
                 if (kode !== "") {
                     data.append("_method", "PUT");
-                    url = `/admin/guru/${kode}`;
+                    url = `/admin/kegiatan/${kode}`;
                 }
 
                 const successCallback = function(response) {
                     setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleSuccess(response, "guru-table", "createModal");
+                    handleSuccess(response, "kegiatan-table", "createModal");
                 };
 
                 const errorCallback = function(error) {
                     setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleValidationErrors(error, "saveData", ["nama", "guru_id", "mapel_id"]);
+                    handleValidationErrors(error, "saveData", ["nama", "kriteria_id"]);
                 };
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);

@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MapelController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\DashboardController;
 
@@ -22,6 +24,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('kriteria', KriteriaController::class)->names('kriteria');
     Route::resource('guru', GuruController::class)->names('guru');
     Route::resource('mapel', MapelController::class)->names('mapel');
+    Route::get('nilai/penilaian', [NilaiController::class, 'penilaian'])->name('nilai.penilaian');
+    Route::post('nilai/penilaian', [NilaiController::class, 'penilaianStore'])->name('nilai.penilaian.store');
+    Route::resource('nilai', NilaiController::class)->names('nilai');
+    Route::resource('kegiatan', KegiatanController::class)->names('kegiatan');
 
 
     Route::match(['get', 'put'], 'profil', [ProfileController::class, 'index'])->name('profil');

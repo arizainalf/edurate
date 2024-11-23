@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kegiatan')
+@section('title', 'Nilai')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('library/datatables/datatables.min.css') }}">
@@ -21,25 +21,27 @@
                             Data @yield('title')
                         </div>
                         <div class="ml-auto">
-                            <button class="btn btn-success" onclick="getModal('createModal')"><i
-                                    class="fas fa-plus mr-2"></i>Tambah</button>
+                            <a href="{{ route('nilai.penilaian') }}" >
+                            <button class="btn btn-lg btn-success" ><i
+                                    class="fas fa-plus mr-2"></i>Penilaian</button> </a>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <a href="{{ route('guru.show', 'pdf') }}" class="btn btn-sm px-3 btn-danger mr-1"
+                            <a href="{{ route('nilai.show', 'pdf') }}" class="btn btn-sm px-3 btn-danger mr-1"
                                 target="_blank"><i class="fas fa-file-pdf mr-2"></i>Pdf</a>
-                            <a href="{{ route('guru.show', 'excel') }}" class="btn btn-sm px-3 btn-info"
-                                target="_blank"><i class="fas fa-file-excel mr-2"></i>Excel</a>
+                            <a href="{{ route('nilai.show', 'excel') }}" class="btn btn-sm px-3 btn-info" target="_blank"><i
+                                    class="fas fa-file-excel mr-2"></i>Excel</a>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="guru-table" width="100%">
+                            <table class="table table-bordered table-striped" id="nilai-table" width="100%">
                                 <thead>
                                     <tr>
                                         <th scope="col" width="5%">#</th>
                                         <th scope="col">Nama</th>
-                                        <th scope="col">Jabatan</th>
-                                        <th scope="col">Mata Pelajaran</th>
+                                        <th scope="col">Tanggal</th>
+                                        <th scope="col">Keterangan</th>
+                                        <th scope="col">Tahun Ajaran</th>
                                         <th scope="col" width="20%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -52,7 +54,7 @@
             </div>
         </section>
     </div>
-    @include('pages.guru.modal')
+    @include('pages.nilai.modal')
 @endsection
 
 @push('scripts')
@@ -63,21 +65,25 @@
 
     <script>
         $(document).ready(function() {
-            datatableCall('guru-table', '{{ route('guru.index') }}', [{
+            datatableCall('nilai-table', '{{ route('nilai.index') }}', [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'guru',
+                    name: 'guru'
                 },
                 {
-                    data: 'jabatan',
-                    name: 'jabatan'
+                    data: 'tanggal',
+                    name: 'tanggal'
                 },
                 {
-                    data: 'mapel',
-                    name: 'mapel'
+                    data: 'tahun_pelajaran',
+                    name: 'tahun_pelajaran'
+                },
+                {
+                    data: 'nilai',
+                    name: 'nilai'
                 },
                 {
                     data: 'action',
@@ -92,22 +98,22 @@
                 setButtonLoadingState("#saveData .btn.btn-success", true);
                 e.preventDefault();
                 const kode = $("#saveData #id").val();
-                let url = "{{ route('guru.store') }}";
+                let url = "{{ route('nilai.store') }}";
                 const data = new FormData(this);
 
                 if (kode !== "") {
                     data.append("_method", "PUT");
-                    url = `/admin/guru/${kode}`;
+                    url = `/admin/nilai/${kode}`;
                 }
 
                 const successCallback = function(response) {
                     setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleSuccess(response, "guru-table", "createModal");
+                    handleSuccess(response, "nilai-table", "createModal");
                 };
 
                 const errorCallback = function(error) {
                     setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleValidationErrors(error, "saveData", ["nama", "guru_id", "mapel_id"]);
+                    handleValidationErrors(error, "saveData", ["nama", "nilai_id", "mapel_id"]);
                 };
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);
