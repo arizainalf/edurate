@@ -12,7 +12,7 @@
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user d-flex justify-content-center align-items-center">
                 <div style="background-image: url('{{ asset(Auth::user()->image != 'default.png' ? '/storage/img/user/' . Auth::user()->image : '/images/default.png') }}');"
                     class="img-navbar d-block mr-3"></div>
-                <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->nama ?? 'Login Terlebih Dahulu!' }}</div>
+                <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name ?? 'Login Terlebih Dahulu!' }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="{{ url('admin/profil') }}" class="dropdown-item has-icon">

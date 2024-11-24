@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\JabatanController;
@@ -28,6 +29,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('nilai/penilaian', [NilaiController::class, 'penilaianStore'])->name('nilai.penilaian.store');
     Route::get('nilai/{id}/pdf', [NilaiController::class, 'generatePDF'])->name('nilai.pdf');
     Route::resource('nilai', NilaiController::class)->names('nilai');
+    Route::resource('user', UserController::class)->names('user');
     Route::resource('kegiatan', KegiatanController::class)->names('kegiatan');
 
 

@@ -11,13 +11,8 @@
                 <div class="modal-body">
                     <input type="hidden" id="id">
                     <div class="form-group">
-                        <label for="image" class="form-label">Foto </label>
-                        <input type="file" name="image" id="image" class="dropify" data-height="200">
-                        <small class="invalid-feedback" id="errorimage"></small>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nama" name="nama">
+                        <label for="name" class="form-label">Nama <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name">
                         <small class="invalid-feedback" id="errornama"></small>
                     </div>
                     <div class="form-group">
@@ -53,16 +48,6 @@
                             </div>
                         </div>
                         <small class="invalid-feedback" id="errorpassword_confirmation"></small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
-                        <select name="role" id="role" class="form-control">
-                            <option value=""> -- Pilih Role --</option>
-                            <option value="User">User</option>
-                            <option value="Admin">Admin</option>
-                        </select>
-                        <small class="invalid-feedback" id="errorrole"></small>
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">

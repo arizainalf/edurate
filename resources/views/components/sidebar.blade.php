@@ -32,6 +32,9 @@
             <li class="nav-item {{ Request::is('admin/nilai*') ? 'active' : '' }}">
                 <a href="{{ url('admin/nilai') }}" class="nav-link"><i class="fas fa-book"></i> <span>Nilai</span></a>
             </li>
+            <li class="nav-item {{ Request::is('admin/user*') ? 'active' : '' }}">
+                <a href="{{ url('admin/user') }}" class="nav-link"><i class="fas fa-book"></i> <span>User</span></a>
+            </li>
             <li class="nav-item {{ Request::is('admin/profill') ? 'active' : '' }}">
                 <a href="{{ url('admin/profil') }}" class="nav-link"><i class="fa-solid fa-id-badge"></i>
                     <span>Profile</span></a>

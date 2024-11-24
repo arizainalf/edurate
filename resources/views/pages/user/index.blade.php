@@ -33,10 +33,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" width="5%">#</th>
-                                        <th scope="col" width="10%">Gambar</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Role</th>
                                         <th scope="col" width="20%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -69,27 +67,18 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'image',
-                    name: 'image'
-                },
-                {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'name',
+                    name: 'name'
                 },
                 {
                     data: 'email',
                     name: 'email'
                 },
                 {
-                    data: 'role',
-                    name: 'role'
-                },
-                {
                     data: 'action',
                     name: 'action'
                 },
             ]);
-            select2ToJson("#category_id", "{{ route('kategori.index') }}", "#createModal");
 
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-success", true);
