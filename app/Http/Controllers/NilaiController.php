@@ -209,21 +209,33 @@ class NilaiController extends Controller
         if (!$id) {
             abort(404, 'ID tidak diberikan.');
         }
-        $guru = Guru::with('jabatan','mataPelajaran')->find($id);
+        $guru = Guru::with('jabatan', 'mataPelajaran')->find($id);
 
-        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'id'));
+        $tanggal = now()->format('d M Y');
+
+        $kriterias = Kriteria::with([
+            'kegiatans.detailNilais.nilai' => function ($query) use ($id) {
+                $query->where('id', $id); // Kondisi pada relasi 'nilai'
+            }
+        ])->whereHas('kegiatans.detailNilais.nilai', function ($query) use ($id) {
+            $query->where('id', $id);
+        })->get();
+
+        $nilai = Nilai::with('guru', 'detailNilais');
+
+        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'id', 'guru', 'nilai', 'tanggal'))   ;
 
         $options = [
-            'margin_top' => 20,
-            'margin_right' => 20,
-            'margin_bottom' => 20,
-            'margin_left' => 20,
+            'margin_top' => 10,
+            'margin_right' => 10,
+            'margin_bottom' => 10,
+            'margin_left' => 10,
         ];
 
         $pdf->setOptions($options);
-        $pdf->setPaper('a4', 'landscape');
+        $pdf->setPaper('a4', 'potrait');
 
-        return $pdf->stream('Nilai_' . $id . '.pdf', compact('kriterias', 'id'));
+        return $pdfinstance->stream('Nilai_' . $id . '.pdf');
     }
 
 }

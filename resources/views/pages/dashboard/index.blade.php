@@ -22,10 +22,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Kategori</h4>
+                                <h4>Guru</h4>
                             </div>
                             <div class="card-body">
-                                {{ $category }}
+                                {{ $guru }}
                             </div>
                         </div>
                     </div>
@@ -37,10 +37,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Buku</h4>
+                                <h4>Jabatan</h4>
                             </div>
                             <div class="card-body">
-                                {{ $books }}
+                                {{ $jabatan }}
                             </div>
                         </div>
                     </div>
@@ -52,10 +52,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Member</h4>
+                                <h4>Nilai</h4>
                             </div>
                             <div class="card-body">
-                                {{ $members }}
+                                {{ $nilai }}
                             </div>
                         </div>
                     </div>
@@ -67,40 +67,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Peminjaman</h4>
+                                <h4>Mapel</h4>
                             </div>
                             <div class="card-body">
-                                {{ $loans }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Pengembalian</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $pengembalian }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Kunjungan</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $berkunjung }}
+                                {{ $mapel }}
                             </div>
                         </div>
                     </div>

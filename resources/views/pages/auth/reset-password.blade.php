@@ -16,7 +16,7 @@
                     </div>
                     <h4 class="text-dark text-center mb-2 font-weight-normal">Reset Password</h4>
                     <h4 class="font-weight-bold text-dark text-center mb-2">{{ config('app.name') }}</h4>
-                    <small class='text-center mb-3 d-block '>Netutas Library</small>
+                    <small class='text-center mb-3 d-block '></small>
                     <form id="reset-password" autocomplete="off">
                         <input type="hidden" name="token" value="{{ $token }}">
                         <input type="hidden" name="email" value="{{ $_GET['email'] }}">

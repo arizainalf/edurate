@@ -27,12 +27,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <a href="{{ route('nilai.show', 'pdf') }}" class="btn btn-sm px-3 btn-danger mr-1"
-                                target="_blank"><i class="fas fa-file-pdf mr-2"></i>Pdf</a>
-                            <a href="{{ route('nilai.show', 'excel') }}" class="btn btn-sm px-3 btn-info" target="_blank"><i
-                                    class="fas fa-file-excel mr-2"></i>Excel</a>
-                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="nilai-table" width="100%">
                                 <thead>
@@ -40,8 +35,8 @@
                                         <th scope="col" width="5%">#</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Tanggal</th>
-                                        <th scope="col">Keterangan</th>
                                         <th scope="col">Tahun Ajaran</th>
+                                        <th scope="col">Nilai</th>
                                         <th scope="col" width="20%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -82,8 +77,8 @@
                     name: 'tahun_pelajaran'
                 },
                 {
-                    data: 'nilai',
-                    name: 'nilai'
+                    data: 'hasil',
+                    name: 'hasil'
                 },
                 {
                     data: 'action',

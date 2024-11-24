@@ -9,10 +9,10 @@
         body {
             font-family: 'Times New Roman', Times, serif;
             line-height: 1.2;
+            font-size: 10;
             margin: 0;
             padding: 0;
         }
-
         h3 {
             margin: 2;
         }
@@ -34,7 +34,7 @@
                     <h3>TAHUN PELAJARAN</h3>
                     <div>
                         <span>
-                            Jl. Letnan Dadi Suryatman No.76 46131 Tasikmalaya Jawa Barat
+                            Jl. Nasional III, Manggungsari, Kec. Rajapolah, Kabupaten Tasikmalaya, Jawa Barat 46155
                         </span>
                     </div>
                 </td>
