@@ -28,10 +28,10 @@
                     {{-- <img width='120px' src="{{ generateBase64Image(public_path('images/logo-pemkot.png')) }}"
                         alt=""> --}}
                 </td>
-                <td align="center">
-                    <h3>PERPUSTAKAAN SMPN 7 TASIKMALAYA </h3>
-                    <h3>KAMPUS MENGAJAR 7</h3>
-                    <h3>SEKOLAHKU NYAMAN</h3>
+                <td align="left">
+                    <h3>RAPOT KINERJA GURU/TENAGA KEPENDIDIKAN</h3>
+                    <h3>SD/SMP IT ABU BAKAR ASH-SHIDIQ</h3>
+                    <h3>TAHUN PELAJARAN</h3>
                     <div>
                         <span>
                             Jl. Letnan Dadi Suryatman No.76 46131 Tasikmalaya Jawa Barat

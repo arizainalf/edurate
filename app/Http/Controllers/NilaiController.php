@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use App\Models\Guru;
-use App\Models\Nilai;
-use App\Models\Kegiatan;
-use App\Models\Kriteria;
-use Barryvdh\DomPDF\PDF;
 use App\Models\DetailNilai;
-use Illuminate\Http\Request;
+use App\Models\Guru;
+use App\Models\Kriteria;
+use App\Models\Nilai;
 use App\Traits\JsonResponder;
+use Barryvdh\DomPDF\PDF;
+use DataTables;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class NilaiController extends Controller
@@ -26,16 +25,16 @@ class NilaiController extends Controller
             if ($request->mode == "datatable") {
                 return DataTables::of($nilais)
                     ->addColumn('action', function ($nilai) {
-                        $detailButton = '<button class="btn btn-sm btn-primary d-inline-flex  align-items-baseline  mr-1" onclick="getModal(`createModal`, `/admin/nilai/' . $nilai->id . '`, [`id`, `nama`])"><i class="fas fa-edit mr-1"></i>Detail</button>';
+                        $pdfButton = '<button class="btn btn-sm btn-primary d-inline-flex align-items-baseline mr-1" onclick="window.location.href=`/admin/nilai/' . $nilai->id . '/pdf`"><i class="fas fa-file-pdf mr-1"></i>PDF</button>';
                         $editButton = '<button class="btn btn-sm btn-warning d-inline-flex  align-items-baseline  mr-1" onclick="getModal(`createModal`, `/admin/nilai/' . $nilai->id . '`, [`id`, `nama`])"><i class="fas fa-edit mr-1"></i>Edit</button>';
                         $deleteButton = '<button class="btn btn-sm btn-danger d-inline-flex  align-items-baseline " onclick="confirmDelete(`/admin/nilai/' . $nilai->id . '`, `nilai-table`)"><i class="fas fa-trash mr-1"></i>Hapus</button>';
-                        return $detailButton . $editButton . $deleteButton;
+                        return $pdfButton . $editButton . $deleteButton;
                     })
                     ->addColumn('guru', function ($nilai) {
                         return $nilai->guru->nama;
                     })
                     ->addIndexColumn()
-                    ->rawColumns(['action','guru'])
+                    ->rawColumns(['action', 'guru'])
                     ->make(true);
             }
 
@@ -80,7 +79,7 @@ class NilaiController extends Controller
             DetailNilai::create([
                 'nilai_id' => $nilais->id,
                 'kegiatan_id' => $kegiatanId,
-                'nilai' => $request->nilai[$key],
+                'penilaian' => $request->nilai[$key],
                 'ket' => $request->keterangan[$key] ?? null,
             ]);
             $nilai += $request->nilai[$key];
@@ -88,7 +87,7 @@ class NilaiController extends Controller
         $nilai = $nilai / count($request->kegiatan_id);
 
         $nilais->update([
-            'nilai' => $nilai,
+            'hasil' => $nilai,
         ]);
 
         return $this->successResponse(null, 'Data penilaian berhasil disimpan!', 201);
@@ -126,7 +125,9 @@ class NilaiController extends Controller
             ob_start();
             return Excel::download(new CategoryExport(), 'Nilai.xlsx');
         } elseif ($id == 'pdf') {
-            $nilais = Nilai::all();
+
+            $nilais = Nilai::with(['guru.jabatan', 'guru.mataPelajaran', 'detailNilais'])->get();
+
             $pdfinstance = $pdf->loadView('pages.nilai.pdf', compact('nilais'));
 
             $options = [
@@ -203,10 +204,14 @@ class NilaiController extends Controller
         return $this->successResponse(null, 'Data nilai dihapus!');
     }
 
-    public function generatePDF()
+    public function generatePDF(string $id, PDF $pdfinstance)
     {
-        $nilais = Nilai::all();
-        $pdf = PDF::loadView('pages.nilai.pdf', compact('nilais'));
+        if (!$id) {
+            abort(404, 'ID tidak diberikan.');
+        }
+        $guru = Guru::with('jabatan','mataPelajaran')->find($id);
+
+        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'id'));
 
         $options = [
             'margin_top' => 20,
@@ -218,8 +223,7 @@ class NilaiController extends Controller
         $pdf->setOptions($options);
         $pdf->setPaper('a4', 'landscape');
 
-        $namaFile = 'Nilai.pdf';
-
-        return $pdf->download($namaFile);
+        return $pdf->stream('Nilai_' . $id . '.pdf', compact('kriterias', 'id'));
     }
+
 }

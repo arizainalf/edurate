@@ -23,19 +23,18 @@
     <!-- FONTS GOOGLE -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Menambahkan PWA Manifest dan Service Worker Secara Manual -->
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('{{ asset('service-worker.js') }}')
-                .then(function(registration) {
-                    console.log('Service Worker terdaftar dengan scope:', registration.scope);
-                })
-                .catch(function(error) {
-                    console.log('Pendaftaran Service Worker gagal:', error);
-                });
+    <style>
+        .navbar-bg {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 115px;
+            background-color:  #80cee1;
+            z-index: -1;
         }
-    </script>
+    </style>
 </head>
 
 <body>

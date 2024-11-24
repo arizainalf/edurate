@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('nilai_id')->constrained('nilais')->onDelete('cascade');
             $table->foreignId('kegiatan_id')->constrained('kegiatans')->onDelete('cascade');
-            $table->bigInteger('nilai');
+            $table->bigInteger('penilaian');
             $table->string('ket')->nullable();
             $table->timestamps();
         });

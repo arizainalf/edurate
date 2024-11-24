@@ -15,8 +15,8 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(Kriteria::class);
     }
-    public function detailNilai()
+    public function detailNilais()
     {
-        return $this->belongsTo(DetailNilai::class);
+        return $this->hasMany(DetailNilai::class);
     }
 }

@@ -13,9 +13,9 @@ class DetailNilai extends Model
 
     protected $guarded = [];
 
-    public function kegiatans()
+    public function kegiatan()
     {
-        return $this->hasMany(Kegiatan::class);
+        return $this->belongsTo(Kegiatan::class);
     }
     public function nilai()
     {
