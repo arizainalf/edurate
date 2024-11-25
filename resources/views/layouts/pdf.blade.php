@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <title>@yield('title') - {{ config('app.name') }}</title>
     <style>
         body {
@@ -13,8 +13,9 @@
             margin: 0;
             padding: 0;
         }
+
         h3 {
-            margin: 2;
+            margin: 2px;
         }
     </style>
     @stack('style')
@@ -24,9 +25,9 @@
     <table width="100%" border="0" cellpadding="2.5" cellspacing="0">
         <tbody>
             <tr>
-                <td width='20%'>
-                    {{-- <img width='120px' src="{{ generateBase64Image(public_path('images/logo-pemkot.png')) }}"
-                        alt=""> --}}
+                <td width="20%">
+                    {{-- Logo Pemerintah Kota Tasikmalaya --}}
+                    {{-- <img width="120px" src="{{ generateBase64Image(public_path('images/logo-pemkot.png')) }}" alt=""> --}}
                 </td>
                 <td align="left">
                     <h3>RAPOT KINERJA GURU/TENAGA KEPENDIDIKAN</h3>
@@ -38,16 +39,19 @@
                         </span>
                     </div>
                 </td>
-                {{-- <td width='20%' align="right"><img width='120px'
-                        src="{{ generateBase64Image(public_path('images/logo-psc.png')) }}" alt=""> </td> --}}
+                <td width="20%" align="right">
+                    {{-- Logo SDIT/SMPIT --}}
+                    <img width="120px" src="{{ generateBase64Image(public_path('img/Abbash.png')) }}" alt="">
+                </td>
             </tr>
         </tbody>
     </table>
-    <hr style="height:1px;background-color:black;">
+    <hr style="height: 1px; background-color: black;">
+
+    {{-- Isi utama halaman --}}
     @yield('main')
 
     @stack('scripts')
-
 </body>
 
 </html>

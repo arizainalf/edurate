@@ -1,3 +1,2 @@
   <div class="simple-footer">
-      Copyright &copy; {{ date('Y') }} <div class="bullet"></div> Create By Ari Zainal Fauziah
-  </div>
+      Copyright &copy; {{ date('Y') }} <div class="bullet"></div> Khiria Legacy

@@ -6,19 +6,32 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
+
+    <!-- Custom CSS for Hover effect -->
+    <style>
+        a.card {
+            text-decoration: none; /* Menghilangkan garis bawah */
+        }
+
+        a.card:hover {
+            transform: scale(1.05); /* Efek memperbesar sedikit */
+            transition: transform 0.3s ease;
+        }
+    </style>
 @endpush
 
 @section('main')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dashboard, {{ getGreeting() }} {{ auth()->user()->name }}.</h1>
+                <h1>Hallo, {{ getGreeting() }} {{ auth()->user()->name }}.</h1>
             </div>
             <div class="row">
+                <!-- Card Guru -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
+                    <a href="{{ route('guru.index') }}" class="card card-statistic-1">
                         <div class="card-icon bg-primary">
-                            <i class="fas fa-columns"></i>
+                            <i class="fas fa-chalkboard-teacher"></i> <!-- Ikon yang sama dengan sidebar -->
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -28,12 +41,14 @@
                                 {{ $guru }}
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
+                <!-- Card Jabatan -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
+                    <a href="{{ route('jabatan.index') }}" class="card card-statistic-1">
                         <div class="card-icon bg-danger">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-briefcase"></i> <!-- Ikon yang sama dengan sidebar -->
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -43,12 +58,14 @@
                                 {{ $jabatan }}
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
+                <!-- Card Nilai -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
+                    <a href="{{ route('nilai.index') }}" class="card card-statistic-1">
                         <div class="card-icon bg-warning">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-book"></i> <!-- Ikon yang sama dengan sidebar -->
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -58,12 +75,14 @@
                                 {{ $nilai }}
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
+                <!-- Card Mapel -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-users"></i>
+                    <a href="{{ route('mapel.index') }}" class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-book-reader"></i> <!-- Ikon yang sama dengan sidebar -->
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -73,10 +92,9 @@
                                 {{ $mapel }}
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
-
         </section>
     </div>
 @endsection
@@ -87,6 +105,7 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>
+
     <script>
         $(document).ready(function() {
             renderData();

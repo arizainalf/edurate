@@ -7,6 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name') }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/logo2.ico">
+<link rel="icon" type="image/png" href="{{ asset('img/logo2.png') }}">
+
+
+
+
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.css') }}">
@@ -31,11 +38,12 @@
             left: 0;
             width: 100%;
             height: 115px;
-            background-color:  #80cee1;
+            background-color: #80cee1;
             z-index: -1;
         }
     </style>
 </head>
+
 
 <body>
     <div id="app">

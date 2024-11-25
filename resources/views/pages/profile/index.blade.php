@@ -3,7 +3,6 @@
 @section('title', 'Profil')
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('library/dropify/css/dropify.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 @endpush
 
@@ -21,19 +20,8 @@
                                 <h4 class="text-dark">Data @yield('title')</h4>
                             </div>
                             <div class="card-body">
-                                <form id="updateData" enctype="multipart/form-data">
+                                <form id="updateData">
                                     @method('PUT')
-                                    <div class="form-group">
-                                        <label for="image" class="form-label">Foto </label>
-                                        <input type="file" name="image" id="image" class="dropify"
-                                            data-height="200">
-                                        <small class="invalid-feedback" id="errorimage"></small>
-                                        <div id="image-crop-container" style="display:none;">
-                                            <img id="image-crop" style="max-width: 100%;">
-                                            <button type="button" id="crop-image-btn" class="btn btn-primary mt-2">Crop &
-                                                Save</button>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label for="name" class="form-label">Nama <span
                                                 class="text-danger">*</span></label>
@@ -125,67 +113,8 @@
 
 @push('scripts')
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('library/dropify/js/dropify.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
-        let cropper;
-
         $(document).ready(function() {
-            $('.dropify').dropify();
-
-            $("#image").on("change", function(e) {
-                const files = e.target.files;
-                if (files && files.length > 0) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $("#image-crop-container").show();
-                        $("#image-crop").attr("src", e.target.result);
-                        cropper = new Cropper(document.getElementById("image-crop"), {
-                            aspectRatio: 1,
-                            viewMode: 1
-                        });
-                    };
-                    reader.readAsDataURL(files[0]);
-                }
-            });
-
-            $("#crop-image-btn").on("click", function() {
-                const canvas = cropper.getCroppedCanvas({
-                    width: 300,
-                    height: 300
-                });
-                canvas.toBlob(function(blob) {
-                    const formData = new FormData();
-                    formData.append("image", blob);
-                    formData.append("_method", "PUT");
-
-                    // Append other form data
-                    $("#updateData").serializeArray().forEach(field => {
-                        formData.append(field.name, field.value);
-                    });
-
-                    // Send the data to the server
-                    const url = `{{ route('profil') }}`;
-
-                    const successCallback = function(response) {
-                        $('#image').parent().find(".dropify-clear").trigger('click');
-                        $("#image-crop-container").hide();
-                        cropper.destroy();
-                        setButtonLoadingState("#updateData .btn.btn-success", false);
-                        handleSuccess(response, null, null, "no");
-                        $(".img-navbar").css("background-image",
-                            `url('/storage/img/user/${response.data.image}')`);
-                    };
-
-                    const errorCallback = function(error) {
-                        setButtonLoadingState("#updateData .btn.btn-success", false);
-                        handleValidationErrors(error, "updateData", ["nama", "email", "image"]);
-                    };
-
-                    ajaxCall(url, "POST", formData, successCallback, errorCallback);
-                });
-            });
-
             $("#updateData").submit(function(e) {
                 e.preventDefault();
                 const formData = new FormData();
@@ -196,45 +125,22 @@
                     formData.append(field.name, field.value);
                 });
 
-                // Tambahkan file gambar jika ada
-                if (cropper) {
-                    const canvas = cropper.getCroppedCanvas({
-                        width: 300,
-                        height: 300
-                    });
-                    canvas.toBlob(function(blob) {
-                        formData.append("image", blob);
-                        sendProfileUpdate(formData, url);
-                    });
-                } else if ($("#image")[0].files.length > 0) {
-                    formData.append("image", $("#image")[0].files[0]);
-                    sendProfileUpdate(formData, url);
-                } else {
-                    sendProfileUpdate(formData, url);
-                }
+                sendProfileUpdate(formData, url);
             });
 
             function sendProfileUpdate(formData, url) {
                 const successCallback = function(response) {
-                    $('#image').parent().find(".dropify-clear").trigger('click');
-                    $("#image-crop-container").hide();
-                    if (cropper) cropper.destroy();
                     setButtonLoadingState("#updateData .btn.btn-success", false);
                     handleSuccess(response, null, null, "no");
-                    if (response.data.image) {
-                        $(".img-navbar").css("background-image",
-                            `url('/storage/img/user/${response.data.image}')`);
-                    }
                 };
 
                 const errorCallback = function(error) {
                     setButtonLoadingState("#updateData .btn.btn-success", false);
-                    handleValidationErrors(error, "updateData", ["nama", "email", "image"]);
+                    handleValidationErrors(error, "updateData", ["nama", "email"]);
                 };
 
                 ajaxCall(url, "POST", formData, successCallback, errorCallback);
             }
-
         });
     </script>
 @endpush
