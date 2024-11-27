@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kegiatan')
+@section('title', 'Guru')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('library/datatables/datatables.min.css') }}">
