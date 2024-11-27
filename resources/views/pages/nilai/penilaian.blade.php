@@ -15,7 +15,6 @@
                 <h1>@yield('title')</h1>
             </div>
             <div class="section-body">
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -24,7 +23,7 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <form id="penilaianForm" action="{{ route('nilai.penilaian.store') }}" method="POST">
+                                    <form id="saveData" action="{{ route('nilai.penilaian.store') }}" method="POST">
                                         @csrf
                                         <table class="table-striped table">
                                             <tr>
@@ -90,12 +89,9 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </section>
     </div>
-    @include('pages.nilai.modal')
 @endsection
 
 
@@ -107,34 +103,52 @@
 
     <script>
         $(document).ready(function() {
-
-
-            select2ToJson("#jabatan_id", "{{ route('jabatan.index') }}", "#createModal");
-            select2ToJson("#mata_pelajaran_id", "{{ route('mapel.index') }}", "#createModal");
-
             $("#saveData").submit(function(e) {
+                e.preventDefault(); // Mencegah form dikirim secara default
                 setButtonLoadingState("#saveData .btn.btn-success", true);
-                e.preventDefault();
-                const kode = $("#saveData #id").val();
-                let url = "{{ route('nilai.store') }}";
+
+                // Ambil URL dan data form
+                let url = "{{ route('nilai.penilaian.store') }}";
                 const data = new FormData(this);
 
-                if (kode !== "") {
-                    data.append("_method", "PUT");
-                    url = `/admin/nilai/${kode}`;
-                }
+                // Ajax call
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        setButtonLoadingState("#saveData .btn.btn-success", false);
 
-                const successCallback = function(response) {
-                    setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleSuccess(response, "nilai-table", "createModal");
-                };
+                        // Tampilkan pesan sukses dengan redirect
+                        swal({
+                            title: "Berhasil!",
+                            text: response.message || "Data berhasil disimpan.",
+                            icon: "success",
+                        }).then(() => {
+                            // Redirect ke halaman index
+                            window.location.href = "{{ route('nilai.index') }}";
+                        });
+                    },
+                    error: function(xhr) {
+                        setButtonLoadingState("#saveData .btn.btn-success", false);
 
-                const errorCallback = function(error) {
-                    setButtonLoadingState("#saveData .btn.btn-success", false);
-                    handleValidationErrors(error, "saveData", ["nama", "nilai_id", "mapel_id"]);
-                };
-
-                ajaxCall(url, "POST", data, successCallback, errorCallback);
+                        // Menampilkan error validasi
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            handleValidationErrors(errors, "saveData", ["guru_id",
+                                "kegiatan_id", "nilai"
+                            ]);
+                        } else {
+                            swal({
+                                title: "Gagal!",
+                                text: "Terjadi kesalahan pada server.",
+                                icon: "error",
+                            });
+                        }
+                    },
+                });
             });
         });
     </script>

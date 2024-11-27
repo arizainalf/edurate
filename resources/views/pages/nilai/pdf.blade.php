@@ -39,9 +39,8 @@
                     @php
                         $no = 0;
                         $total = 0;
-
                     @endphp
-                    @foreach ($kriteria->kegiatans as $kegiatan)
+                        @foreach ($kriteria->kegiatans as $kegiatan)
                         @foreach ($kegiatan->detailNilais as $nilai)
                             @php
                                 $no++;
@@ -57,6 +56,7 @@
                             </tr>
                         @endforeach
                     @endforeach
+
                     <tr>
                         <td align="center" colspan="2">Total</td>
                         <td align="center">{{ $total / $no }}</td>

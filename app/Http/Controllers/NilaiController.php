@@ -209,22 +209,32 @@ class NilaiController extends Controller
         if (!$id) {
             abort(404, 'ID tidak diberikan.');
         }
-        $guru = Guru::with('jabatan', 'mataPelajaran')->find($id);
 
         $tanggal = now()->format('d M Y');
 
+        // Ambil data Nilai berdasarkan ID
+        $nilai = Nilai::with('guru', 'detailNilais.kegiatan.kriteria')->find($id);
+
+        if (!$nilai) {
+            abort(404, 'Nilai tidak ditemukan.');
+        }
+
+        // Ambil guru_id dari $nilai
+        $guru = Guru::with('jabatan', 'mataPelajaran')->find($nilai->guru_id);
+
+        // Ambil data Kriteria yang berkaitan dengan Nilai
         $kriterias = Kriteria::with([
-            'kegiatans.detailNilais.nilai' => function ($query) use ($id) {
-                $query->where('id', $id); // Kondisi pada relasi 'nilai'
-            }
-        ])->whereHas('kegiatans.detailNilais.nilai', function ($query) use ($id) {
-            $query->where('id', $id);
+            'kegiatans.detailNilais' => function ($query) use ($id) {
+                $query->where('nilai_id', $id); // Filter hanya untuk nilai_id tertentu
+            },
+        ])->whereHas('kegiatans.detailNilais', function ($query) use ($id) {
+            $query->where('nilai_id', $id); // Filter hanya untuk nilai_id tertentu
         })->get();
 
-        $nilai = Nilai::with('guru', 'detailNilais');
+        // Load PDF View
+        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'guru', 'nilai', 'tanggal'));
 
-        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'id', 'guru', 'nilai', 'tanggal'))   ;
-
+        // Set PDF options
         $options = [
             'margin_top' => 10,
             'margin_right' => 10,
@@ -233,9 +243,10 @@ class NilaiController extends Controller
         ];
 
         $pdf->setOptions($options);
-        $pdf->setPaper('a4', 'potrait');
+        $pdf->setPaper('a4', 'portrait');
 
         return $pdfinstance->stream('Nilai_' . $id . '.pdf');
     }
+
 
 }
