@@ -27,6 +27,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('mapel', MapelController::class)->names('mapel');
     Route::get('nilai/penilaian', [NilaiController::class, 'penilaian'])->name('nilai.penilaian');
     Route::post('nilai/penilaian', [NilaiController::class, 'penilaianStore'])->name('nilai.penilaian.store');
+    Route::get('nilai/{id}/edit', [NilaiController::class, 'edit'])->name('edit');
+    Route::post('nilai{id}/update', [NilaiController::class, 'updatePenilaian'])->name('nilai.penilaian.update');
     Route::get('nilai/{id}/pdf', [NilaiController::class, 'generatePDF'])->name('nilai.pdf');
     Route::resource('nilai', NilaiController::class)->names('nilai');
     Route::resource('user', UserController::class)->names('user');

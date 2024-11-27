@@ -36,31 +36,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($kriteria->kegiatans as $kegiatan)
                     @php
                         $no = 0;
                         $total = 0;
                     @endphp
-                        @foreach ($kriteria->kegiatans as $kegiatan)
                         @foreach ($kegiatan->detailNilais as $nilai)
-                            @php
-                                $no++;
-                                $totalNilai += $no;
-                                $total += $nilai->penilaian;
-                                $totalSemua += $total;
-                            @endphp
-                            <tr>
-                                <td align="center">{{ $no }}</td>
-                                <td>{{ $kegiatan->nama }}</td>
-                                <td align="center">{{ $nilai->penilaian }}</td>
-                                <td>{{ $nilai->ket ?? '-' }}</td>
-                            </tr>
+                            @if ($nilai->nilai_id == $id)
+                                @php
+                                    $no++;
+                                    $totalNilai += $no;
+                                    $total += $nilai->penilaian;
+                                    $totalSemua += $total;
+                                @endphp
+                                <tr>
+                                    <td align="center">{{ $no }}</td>
+                                    <td>{{ $kegiatan->nama }}</td>
+                                    <td align="center">{{ $nilai->penilaian }}</td>
+                                    <td align="center">{{ $nilai->ket ?? '-' }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     @endforeach
 
                     <tr>
                         <td align="center" colspan="2">Total</td>
                         <td align="center">{{ $total / $no }}</td>
-                        <td></td>
+                        <td align="center">-</td>
                     </tr>
                 </tbody>
             </table>
@@ -92,7 +94,7 @@
                     </table>
                 </td>
                 <td width="40%" align="center">
-                    <p>Rajapolah, {{$tanggal}} </p>
+                    <p>Rajapolah, {{ $tanggal }} </p>
                     <br><br>
                     <p>Ari Syamsul Bahri. M.Pd</p>
                 </td>

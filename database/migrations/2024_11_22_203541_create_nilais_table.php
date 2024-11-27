@@ -13,7 +13,7 @@ class CreateNilaisTable extends Migration
             $table->foreignId('guru_id')->constrained('gurus')->onDelete('cascade');
             $table->date('tanggal');
             $table->string('tahun_pelajaran');
-            $table->bigInteger('hasil')->nullable();
+            $table->float('hasil')->default(0);
             $table->timestamps();
         });
     }

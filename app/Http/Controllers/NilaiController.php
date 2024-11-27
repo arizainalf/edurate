@@ -26,7 +26,7 @@ class NilaiController extends Controller
                 return DataTables::of($nilais)
                     ->addColumn('action', function ($nilai) {
                         $pdfButton = '<button class="btn btn-sm btn-primary d-inline-flex align-items-baseline mr-1" onclick="window.location.href=`/admin/nilai/' . $nilai->id . '/pdf`"><i class="fas fa-file-pdf mr-1"></i>PDF</button>';
-                        $editButton = '<button class="btn btn-sm btn-warning d-inline-flex  align-items-baseline  mr-1" onclick="getModal(`createModal`, `/admin/nilai/' . $nilai->id . '`, [`id`, `nama`])"><i class="fas fa-edit mr-1"></i>Edit</button>';
+                        $editButton = '<button class="btn btn-sm btn-warning d-inline-flex  align-items-baseline  mr-1" onclick="window.location.href=`/admin/nilai/' . $nilai->id . '/edit`"><i class="fas fa-edit mr-1"></i>Edit</button>';
                         $deleteButton = '<button class="btn btn-sm btn-danger d-inline-flex  align-items-baseline " onclick="confirmDelete(`/admin/nilai/' . $nilai->id . '`, `nilai-table`)"><i class="fas fa-trash mr-1"></i>Hapus</button>';
                         return $pdfButton . $editButton . $deleteButton;
                     })
@@ -161,7 +161,15 @@ class NilaiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $nilai = Nilai::with('detailNilais.kegiatan.kriteria')->find($id);
+        $gurus = Guru::with('jabatan', 'mataPelajaran')->get();
+        $kriterias = Kriteria::with('kegiatans')->get();
+
+        if (!$nilai) {
+            return redirect()->route('nilai.index')->with('error', 'Data nilai tidak ditemukan.');
+        }
+
+        return view('pages.nilai.editpenilaian', compact('nilai', 'kriterias', 'gurus'));
     }
 
     /**
@@ -212,6 +220,7 @@ class NilaiController extends Controller
 
         $tanggal = now()->format('d M Y');
 
+        $id = $id;
         // Ambil data Nilai berdasarkan ID
         $nilai = Nilai::with('guru', 'detailNilais.kegiatan.kriteria')->find($id);
 
@@ -232,7 +241,7 @@ class NilaiController extends Controller
         })->get();
 
         // Load PDF View
-        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'guru', 'nilai', 'tanggal'));
+        $pdf = $pdfinstance->loadView('pages.nilai.pdf', compact('kriterias', 'guru', 'nilai', 'tanggal', 'id'));
 
         // Set PDF options
         $options = [
@@ -247,6 +256,80 @@ class NilaiController extends Controller
 
         return $pdfinstance->stream('Nilai_' . $id . '.pdf');
     }
+    public function updatePenilaian(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'guru_id' => 'required|exists:gurus,id',
+            'kegiatan_id' => 'required|array',
+            'kegiatan_id.*' => 'exists:kegiatans,id',
+            'nilai' => 'required|array',
+            'nilai.*' => 'integer|min:0|max:100',
+            'ket' => 'nullable|array',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data tidak valid.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $nilai = Nilai::find($id);
+
+        if (!$nilai) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data nilai tidak ditemukan.',
+            ], 404);
+        }
+
+        // Update guru_id
+        $nilai->guru_id = $request->guru_id;
+        $nilai->save();
+
+        // Update atau buat ulang detail nilai
+        $kegiatanIds = $request->kegiatan_id;
+        $existingDetails = DetailNilai::where('nilai_id', $id)
+            ->whereIn('kegiatan_id', $kegiatanIds)
+            ->get()
+            ->keyBy('kegiatan_id');
+
+        $hasil = 0;
+        foreach ($kegiatanIds as $key => $kegiatanId) {
+            $detail = $existingDetails->get($kegiatanId);
+
+            $hasil += $request->nilai[$key];
+
+            if ($detail) {
+
+                $detail->update([
+                    'penilaian' => $request->nilai[$key],
+                    'ket' => $request->ket[$key] ?? null,
+                ]);
+            } else {
+
+                DetailNilai::create([
+                    'nilai_id' => $id,
+                    'kegiatan_id' => $kegiatanId,
+                    'penilaian' => $request->nilai[$key],
+                    'ket' => $request->ket[$key] ?? null,
+                ]);
+            }
+        }
+
+
+        $hasil = $hasil / count($request->kegiatan_id);
+
+        $nilai->update([
+            'hasil' => $hasil,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data nilai berhasil diubah.',
+            'data' => $nilai->load('detailNilais.kegiatan.kriteria'),
+        ]);
+    }
 
 }
