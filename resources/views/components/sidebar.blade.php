@@ -127,7 +127,7 @@
                 </li>
                 <li class="nav-item {{ Request::is('admin/nilai*') ? 'active' : '' }}">
                     <a href="{{ url('admin/nilai') }}" class="nav-link">
-                        <i class="fas fa-graduation-cap"></i> <span>Nilai</span>
+                        <i class="fas fa-book"></i> <span>Nilai</span>
                     </a>
                 </li>
                 <li class="nav-item {{ Request::is('admin/user*') ? 'active' : '' }}">

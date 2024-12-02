@@ -125,7 +125,7 @@
         <div class="d-none d-lg-block col-lg-8 py-5 min-vh-100 background-moving position-relative overlay-gradient-bottom order-1">
             <div class="absolute-bottom-left index-2 p-5 pb-2">
                 <div class="text-light">
-                    <h5 class="font-weight-normal text-muted-transparent">SDIT ABU BAKAR ASH-SHIDIQ</h5>
+                    <h5 class="font-weight-normal text-muted-transparent">SD/SMPIT ABU BAKAR ASH-SHIDIQ</h5>
                     <h5 class="font-weight-normal text-muted-transparent">Rajapolah, Tasikmalaya</h5>
                     <h5 id="current-time" class="font-weight-normal text-muted-transparent"></h5>
                 </div>

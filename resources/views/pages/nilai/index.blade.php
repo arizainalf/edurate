@@ -16,18 +16,17 @@
             </div>
             <div class="section-body">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title font-weight-bolder">
                             Data @yield('title')
                         </div>
-                        <div class="ml-auto">
-                            <a href="{{ route('nilai.penilaian') }}" >
-                            <button class="btn btn-lg btn-success" ><i
-                                    class="fas fa-plus mr-2"></i>Penilaian</button> </a>
+                        <div>
+                            <a href="{{ route('nilai.penilaian') }}" class="btn btn-success btn-lg">
+                                <i class="fas fa-plus mr-2"></i>Penilaian
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">
-
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="nilai-table" width="100%">
                                 <thead>
@@ -78,11 +77,32 @@
                 },
                 {
                     data: 'hasil',
-                    name: 'hasil'
+                    name: 'hasil',
+                    render: function(data, type, row) {
+                        if (!isNaN(data)) {
+                            return parseFloat(data).toFixed(3);
+                        }
+                        return data;
+                    }
                 },
                 {
                     data: 'action',
-                    name: 'action'
+                    name: 'action',
+                    render: function(data, type, row) {
+                        return `
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-primary btn-sm mr-2" onclick="window.location.href='${row.pdf_url}'">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn btn-warning btn-sm mr-2" onclick="window.location.href='${row.edit_url}'">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteEntry(${row.id})">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
+                            </div>
+                        `;
+                    }
                 },
             ]);
 

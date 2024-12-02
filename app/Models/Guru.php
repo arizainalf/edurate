@@ -8,10 +8,18 @@ use App\Models\MataPelajaran;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+// app/Models/Guru.php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
 class Guru extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+        'nama',
+        'jabatan_id',
+        'mata_pelajaran_id',
+    ];
 
     public function jabatan()
     {
@@ -22,11 +30,6 @@ class Guru extends Model
     {
         return $this->belongsTo(MataPelajaran::class);
     }
+}
 
-    public function nilais()
-    {
-        return $this->hasMany(Nilai::class);
-    }
-
-    }
 
